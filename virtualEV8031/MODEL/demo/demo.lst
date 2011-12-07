@@ -1,0 +1,564 @@
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 1
+
+
+   1               		.file	"demo.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	hardware_init
+  10               		.type	hardware_init, @function
+  11               	hardware_init:
+  12               	/* prologue: function */
+  13               	/* frame size = 0 */
+  14 0000 80EC      		ldi r24,lo8(-64)
+  15 0002 87BB      		out 55-32,r24
+  16 0004 85BF      		out 85-32,r24
+  17 0006 8BB7      		in r24,91-32
+  18 0008 806C      		ori r24,lo8(-64)
+  19 000a 8BBF      		out 91-32,r24
+  20               	/* #APP */
+  21               	 ;  44 "demo.c" 1
+  22 000c 7894      		sei
+  23               	 ;  0 "" 2
+  24               	/* #NOAPP */
+  25 000e E091 0000 		lds r30,pA
+  26 0012 F091 0000 		lds r31,(pA)+1
+  27 0016 1082      		st Z,__zero_reg__
+  28 0018 E091 0000 		lds r30,pB
+  29 001c F091 0000 		lds r31,(pB)+1
+  30 0020 1082      		st Z,__zero_reg__
+  31 0022 E091 0000 		lds r30,pC
+  32 0026 F091 0000 		lds r31,(pC)+1
+  33 002a 8FEF      		ldi r24,lo8(-1)
+  34 002c 8083      		st Z,r24
+  35 002e E091 0000 		lds r30,LED_REG
+  36 0032 F091 0000 		lds r31,(LED_REG)+1
+  37 0036 1082      		st Z,__zero_reg__
+  38 0038 E091 0000 		lds r30,dotsi
+  39 003c F091 0000 		lds r31,(dotsi)+1
+  40 0040 1082      		st Z,__zero_reg__
+  41               	/* epilogue start */
+  42 0042 0895      		ret
+  43               		.size	hardware_init, .-hardware_init
+  44               	.global	dyn_display_digit
+  45               		.type	dyn_display_digit, @function
+  46               	dyn_display_digit:
+  47               	/* prologue: function */
+  48               	/* frame size = 0 */
+  49 0044 282F      		mov r18,r24
+  50 0046 33E0      		ldi r19,lo8(3)
+  51 0048 48E8      		ldi r20,lo8(5000)
+  52 004a 53E1      		ldi r21,hi8(5000)
+  53               	.L4:
+  54 004c E091 0000 		lds r30,pC
+  55 0050 F091 0000 		lds r31,(pC)+1
+  56 0054 3083      		st Z,r19
+  57 0056 3150      		subi r19,lo8(-(-1))
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 2
+
+
+  58 0058 A091 0000 		lds r26,pB
+  59 005c B091 0000 		lds r27,(pB)+1
+  60 0060 822F      		mov r24,r18
+  61 0062 6AE0      		ldi r22,lo8(10)
+  62 0064 00D0      		rcall __udivmodqi4
+  63 0066 E92F      		mov r30,r25
+  64 0068 F0E0      		ldi r31,lo8(0)
+  65 006a E050      		subi r30,lo8(-(DEC_2_7SEG))
+  66 006c F040      		sbci r31,hi8(-(DEC_2_7SEG))
+  67 006e 8081      		ld r24,Z
+  68 0070 8C93      		st X,r24
+  69 0072 CA01      		movw r24,r20
+  70               	/* #APP */
+  71               	 ;  105 "c:/winavr/lib/gcc/../../avr/include/util/delay_basic.h" 1
+  72 0074 0197      		1: sbiw r24,1
+  73 0076 01F4      		brne 1b
+  74               	 ;  0 "" 2
+  75               	/* #NOAPP */
+  76 0078 822F      		mov r24,r18
+  77 007a 00D0      		rcall __udivmodqi4
+  78 007c 282F      		mov r18,r24
+  79 007e 8823      		tst r24
+  80 0080 01F4      		brne .L4
+  81 0082 E091 0000 		lds r30,pB
+  82 0086 F091 0000 		lds r31,(pB)+1
+  83 008a 1082      		st Z,__zero_reg__
+  84               	/* epilogue start */
+  85 008c 0895      		ret
+  86               		.size	dyn_display_digit, .-dyn_display_digit
+  87               	.global	matrix_display
+  88               		.type	matrix_display, @function
+  89               	matrix_display:
+  90               	/* prologue: function */
+  91               	/* frame size = 0 */
+  92 008e 282F      		mov r18,r24
+  93 0090 30E2      		ldi r19,lo8(32)
+  94 0092 682F      		mov r22,r24
+  95 0094 6A5F      		subi r22,lo8(-(6))
+  96 0096 44EC      		ldi r20,lo8(2500)
+  97 0098 59E0      		ldi r21,hi8(2500)
+  98               	.L9:
+  99 009a 3695      		lsr r19
+ 100 009c E091 0000 		lds r30,pA
+ 101 00a0 F091 0000 		lds r31,(pA)+1
+ 102 00a4 3083      		st Z,r19
+ 103 00a6 A091 0000 		lds r26,pC
+ 104 00aa B091 0000 		lds r27,(pC)+1
+ 105 00ae E22F      		mov r30,r18
+ 106 00b0 F0E0      		ldi r31,lo8(0)
+ 107 00b2 E050      		subi r30,lo8(-(MOTTO))
+ 108 00b4 F040      		sbci r31,hi8(-(MOTTO))
+ 109 00b6 8081      		ld r24,Z
+ 110 00b8 8095      		com r24
+ 111 00ba 8C93      		st X,r24
+ 112 00bc 2F5F      		subi r18,lo8(-(1))
+ 113 00be CA01      		movw r24,r20
+ 114               	/* #APP */
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 3
+
+
+ 115               	 ;  105 "c:/winavr/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 116 00c0 0197      		1: sbiw r24,1
+ 117 00c2 01F4      		brne 1b
+ 118               	 ;  0 "" 2
+ 119               	/* #NOAPP */
+ 120 00c4 E091 0000 		lds r30,pA
+ 121 00c8 F091 0000 		lds r31,(pA)+1
+ 122 00cc 1082      		st Z,__zero_reg__
+ 123 00ce 2617      		cp r18,r22
+ 124 00d0 01F4      		brne .L9
+ 125 00d2 E091 0000 		lds r30,pA
+ 126 00d6 F091 0000 		lds r31,(pA)+1
+ 127 00da 1082      		st Z,__zero_reg__
+ 128               	/* epilogue start */
+ 129 00dc 0895      		ret
+ 130               		.size	matrix_display, .-matrix_display
+ 131               	.global	scan_keyboard
+ 132               		.type	scan_keyboard, @function
+ 133               	scan_keyboard:
+ 134               	/* prologue: function */
+ 135               	/* frame size = 0 */
+ 136 00de E091 0000 		lds r30,kbd0
+ 137 00e2 F091 0000 		lds r31,(kbd0)+1
+ 138 00e6 2081      		ld r18,Z
+ 139 00e8 30E0      		ldi r19,lo8(0)
+ 140 00ea 2095      		com r18
+ 141 00ec 3095      		com r19
+ 142 00ee 2F70      		andi r18,lo8(15)
+ 143 00f0 3070      		andi r19,hi8(15)
+ 144 00f2 E091 0000 		lds r30,kbd1
+ 145 00f6 F091 0000 		lds r31,(kbd1)+1
+ 146 00fa 8081      		ld r24,Z
+ 147 00fc 482F      		mov r20,r24
+ 148 00fe 50E0      		ldi r21,lo8(0)
+ 149 0100 4095      		com r20
+ 150 0102 5095      		com r21
+ 151 0104 4295      		swap r20
+ 152 0106 5295      		swap r21
+ 153 0108 507F      		andi r21,0xf0
+ 154 010a 5427      		eor r21,r20
+ 155 010c 407F      		andi r20,0xf0
+ 156 010e 5427      		eor r21,r20
+ 157 0110 5070      		andi r21,hi8(255)
+ 158 0112 E091 0000 		lds r30,kbd2
+ 159 0116 F091 0000 		lds r31,(kbd2)+1
+ 160 011a 8081      		ld r24,Z
+ 161 011c 90E0      		ldi r25,lo8(0)
+ 162 011e 8095      		com r24
+ 163 0120 9095      		com r25
+ 164 0122 8F70      		andi r24,lo8(15)
+ 165 0124 9070      		andi r25,hi8(15)
+ 166 0126 982F      		mov r25,r24
+ 167 0128 8827      		clr r24
+ 168 012a 482B      		or r20,r24
+ 169 012c 592B      		or r21,r25
+ 170 012e 422B      		or r20,r18
+ 171 0130 532B      		or r21,r19
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 4
+
+
+ 172 0132 E0E0      		ldi r30,lo8(0)
+ 173 0134 00C0      		rjmp .L14
+ 174               	.L16:
+ 175 0136 5695      		lsr r21
+ 176 0138 4795      		ror r20
+ 177               	.L14:
+ 178 013a 40FD      		sbrc r20,0
+ 179 013c 00C0      		rjmp .L13
+ 180 013e EF5F      		subi r30,lo8(-(1))
+ 181 0140 EC30      		cpi r30,lo8(12)
+ 182 0142 01F4      		brne .L16
+ 183               	.L13:
+ 184 0144 F0E0      		ldi r31,lo8(0)
+ 185 0146 E050      		subi r30,lo8(-(KEY_CODES))
+ 186 0148 F040      		sbci r31,hi8(-(KEY_CODES))
+ 187 014a 8081      		ld r24,Z
+ 188               	/* epilogue start */
+ 189 014c 0895      		ret
+ 190               		.size	scan_keyboard, .-scan_keyboard
+ 191               	.global	__vector_1
+ 192               		.type	__vector_1, @function
+ 193               	__vector_1:
+ 194 014e 1F92      		push __zero_reg__
+ 195 0150 0F92      		push r0
+ 196 0152 0FB6      		in r0,__SREG__
+ 197 0154 0F92      		push r0
+ 198 0156 1124      		clr __zero_reg__
+ 199 0158 8F93      		push r24
+ 200 015a 9F93      		push r25
+ 201               	/* prologue: Signal */
+ 202               	/* frame size = 0 */
+ 203 015c 8091 0000 		lds r24,counter
+ 204 0160 9091 0000 		lds r25,delta
+ 205 0164 890F      		add r24,r25
+ 206 0166 8093 0000 		sts counter,r24
+ 207               	/* epilogue start */
+ 208 016a 9F91      		pop r25
+ 209 016c 8F91      		pop r24
+ 210 016e 0F90      		pop r0
+ 211 0170 0FBE      		out __SREG__,r0
+ 212 0172 0F90      		pop r0
+ 213 0174 1F90      		pop __zero_reg__
+ 214 0176 1895      		reti
+ 215               		.size	__vector_1, .-__vector_1
+ 216               	.global	__vector_2
+ 217               		.type	__vector_2, @function
+ 218               	__vector_2:
+ 219 0178 1F92      		push __zero_reg__
+ 220 017a 0F92      		push r0
+ 221 017c 0FB6      		in r0,__SREG__
+ 222 017e 0F92      		push r0
+ 223 0180 1124      		clr __zero_reg__
+ 224 0182 8F93      		push r24
+ 225 0184 9F93      		push r25
+ 226               	/* prologue: Signal */
+ 227               	/* frame size = 0 */
+ 228 0186 8091 0000 		lds r24,counter
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 5
+
+
+ 229 018a 9091 0000 		lds r25,delta
+ 230 018e 891B      		sub r24,r25
+ 231 0190 8093 0000 		sts counter,r24
+ 232               	/* epilogue start */
+ 233 0194 9F91      		pop r25
+ 234 0196 8F91      		pop r24
+ 235 0198 0F90      		pop r0
+ 236 019a 0FBE      		out __SREG__,r0
+ 237 019c 0F90      		pop r0
+ 238 019e 1F90      		pop __zero_reg__
+ 239 01a0 1895      		reti
+ 240               		.size	__vector_2, .-__vector_2
+ 241               	.global	main
+ 242               		.type	main, @function
+ 243               	main:
+ 244 01a2 BF92      		push r11
+ 245 01a4 CF92      		push r12
+ 246 01a6 DF92      		push r13
+ 247 01a8 EF92      		push r14
+ 248 01aa FF92      		push r15
+ 249 01ac 0F93      		push r16
+ 250 01ae 1F93      		push r17
+ 251 01b0 CF93      		push r28
+ 252 01b2 DF93      		push r29
+ 253               	/* prologue: function */
+ 254               	/* frame size = 0 */
+ 255 01b4 00D0      		rcall hardware_init
+ 256 01b6 CC24      		clr r12
+ 257 01b8 CA94      		dec r12
+ 258 01ba 11E0      		ldi r17,lo8(1)
+ 259 01bc ECE0      		ldi r30,lo8(12)
+ 260 01be DE2E      		mov r13,r30
+ 261 01c0 BB24      		clr r11
+ 262 01c2 BA94      		dec r11
+ 263 01c4 00E0      		ldi r16,lo8(0)
+ 264 01c6 C4EC      		ldi r28,lo8(2500)
+ 265 01c8 D9E0      		ldi r29,hi8(2500)
+ 266 01ca 00C0      		rjmp .L22
+ 267               	.L36:
+ 268 01cc 8091 0000 		lds r24,counter
+ 269 01d0 00D0      		rcall dyn_display_digit
+ 270 01d2 CE01      		movw r24,r28
+ 271               	/* #APP */
+ 272               	 ;  105 "c:/winavr/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 273 01d4 0197      		1: sbiw r24,1
+ 274 01d6 01F4      		brne 1b
+ 275               	 ;  0 "" 2
+ 276               	/* #NOAPP */
+ 277 01d8 F02E      		mov r15,r16
+ 278               	.L28:
+ 279 01da E091 0000 		lds r30,righti
+ 280 01de F091 0000 		lds r31,(righti)+1
+ 281 01e2 8091 0000 		lds r24,delta
+ 282 01e6 8083      		st Z,r24
+ 283 01e8 E091 0000 		lds r30,LED_REG
+ 284 01ec F091 0000 		lds r31,(LED_REG)+1
+ 285 01f0 1083      		st Z,r17
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 6
+
+
+ 286 01f2 E091 0000 		lds r30,DAC_REG
+ 287 01f6 F091 0000 		lds r31,(DAC_REG)+1
+ 288 01fa 812F      		mov r24,r17
+ 289 01fc 8095      		com r24
+ 290 01fe 8083      		st Z,r24
+ 291 0200 CE01      		movw r24,r28
+ 292               	/* #APP */
+ 293               	 ;  105 "c:/winavr/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 294 0202 0197      		1: sbiw r24,1
+ 295 0204 01F4      		brne 1b
+ 296               	 ;  0 "" 2
+ 297               	/* #NOAPP */
+ 298 0206 CC20      		tst r12
+ 299 0208 01F0      		breq .L29
+ 300 020a 110F      		lsl r17
+ 301               	.L30:
+ 302 020c 1038      		cpi r17,lo8(-128)
+ 303 020e 01F0      		breq .L31
+ 304 0210 1130      		cpi r17,lo8(1)
+ 305 0212 01F0      		breq .L31
+ 306               	.L32:
+ 307 0214 DE2C      		mov r13,r14
+ 308 0216 0F2D      		mov r16,r15
+ 309               	.L22:
+ 310 0218 00D0      		rcall scan_keyboard
+ 311 021a E82E      		mov r14,r24
+ 312 021c 8AE0      		ldi r24,lo8(10)
+ 313 021e E816      		cp r14,r24
+ 314 0220 01F0      		breq .L24
+ 315 0222 8BE0      		ldi r24,lo8(11)
+ 316 0224 E816      		cp r14,r24
+ 317 0226 01F0      		breq .L35
+ 318 0228 89E0      		ldi r24,lo8(9)
+ 319 022a 8E15      		cp r24,r14
+ 320 022c 00F0      		brlo .L26
+ 321 022e E092 0000 		sts delta,r14
+ 322               	.L26:
+ 323 0232 BB20      		tst r11
+ 324 0234 01F4      		brne .L36
+ 325 0236 F02E      		mov r15,r16
+ 326 0238 F394      		inc r15
+ 327 023a 802F      		mov r24,r16
+ 328 023c 00D0      		rcall matrix_display
+ 329 023e CE01      		movw r24,r28
+ 330               	/* #APP */
+ 331               	 ;  105 "c:/winavr/lib/gcc/../../avr/include/util/delay_basic.h" 1
+ 332 0240 0197      		1: sbiw r24,1
+ 333 0242 01F4      		brne 1b
+ 334               	 ;  0 "" 2
+ 335               	/* #NOAPP */
+ 336 0244 8DE1      		ldi r24,lo8(29)
+ 337 0246 F816      		cp r15,r24
+ 338 0248 01F4      		brne .L28
+ 339 024a FF24      		clr r15
+ 340 024c 00C0      		rjmp .L28
+ 341               	.L31:
+ 342 024e C094      		com r12
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 7
+
+
+ 343 0250 00C0      		rjmp .L32
+ 344               	.L29:
+ 345 0252 1695      		lsr r17
+ 346 0254 00C0      		rjmp .L30
+ 347               	.L35:
+ 348 0256 8BE0      		ldi r24,lo8(11)
+ 349 0258 D816      		cp r13,r24
+ 350 025a 01F0      		breq .L26
+ 351 025c B094      		com r11
+ 352 025e 00C0      		rjmp .L26
+ 353               	.L24:
+ 354 0260 1092 0000 		sts counter,__zero_reg__
+ 355 0264 00C0      		rjmp .L26
+ 356               		.size	main, .-main
+ 357               	.global	lefti
+ 358               		.data
+ 359               		.type	lefti, @object
+ 360               		.size	lefti, 2
+ 361               	lefti:
+ 362 0000 00A0      		.word	-24576
+ 363               	.global	righti
+ 364               		.type	righti, @object
+ 365               		.size	righti, 2
+ 366               	righti:
+ 367 0002 01A0      		.word	-24575
+ 368               	.global	dotsi
+ 369               		.type	dotsi, @object
+ 370               		.size	dotsi, 2
+ 371               	dotsi:
+ 372 0004 04A0      		.word	-24572
+ 373               	.global	LED_REG
+ 374               		.type	LED_REG, @object
+ 375               		.size	LED_REG, 2
+ 376               	LED_REG:
+ 377 0006 06A0      		.word	-24570
+ 378               	.global	pA
+ 379               		.type	pA, @object
+ 380               		.size	pA, 2
+ 381               	pA:
+ 382 0008 0080      		.word	-32768
+ 383               	.global	pB
+ 384               		.type	pB, @object
+ 385               		.size	pB, 2
+ 386               	pB:
+ 387 000a 0180      		.word	-32767
+ 388               	.global	pC
+ 389               		.type	pC, @object
+ 390               		.size	pC, 2
+ 391               	pC:
+ 392 000c 0280      		.word	-32766
+ 393               	.global	DAC_REG
+ 394               		.type	DAC_REG, @object
+ 395               		.size	DAC_REG, 2
+ 396               	DAC_REG:
+ 397 000e 00F0      		.word	-4096
+ 398               	.global	kbd0
+ 399               		.type	kbd0, @object
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 8
+
+
+ 400               		.size	kbd0, 2
+ 401               	kbd0:
+ 402 0010 0690      		.word	-28666
+ 403               	.global	kbd1
+ 404               		.type	kbd1, @object
+ 405               		.size	kbd1, 2
+ 406               	kbd1:
+ 407 0012 0590      		.word	-28667
+ 408               	.global	kbd2
+ 409               		.type	kbd2, @object
+ 410               		.size	kbd2, 2
+ 411               	kbd2:
+ 412 0014 0390      		.word	-28669
+ 413               	.global	KEY_CODES
+ 414               		.type	KEY_CODES, @object
+ 415               		.size	KEY_CODES, 13
+ 416               	KEY_CODES:
+ 417 0016 01        		.byte	1
+ 418 0017 04        		.byte	4
+ 419 0018 07        		.byte	7
+ 420 0019 0A        		.byte	10
+ 421 001a 02        		.byte	2
+ 422 001b 05        		.byte	5
+ 423 001c 08        		.byte	8
+ 424 001d 00        		.byte	0
+ 425 001e 03        		.byte	3
+ 426 001f 06        		.byte	6
+ 427 0020 09        		.byte	9
+ 428 0021 0B        		.byte	11
+ 429 0022 0C        		.byte	12
+ 430               	.global	DEC_2_7SEG
+ 431               		.type	DEC_2_7SEG, @object
+ 432               		.size	DEC_2_7SEG, 17
+ 433               	DEC_2_7SEG:
+ 434 0023 3F        		.byte	63
+ 435 0024 06        		.byte	6
+ 436 0025 5B        		.byte	91
+ 437 0026 4F        		.byte	79
+ 438 0027 66        		.byte	102
+ 439 0028 6D        		.byte	109
+ 440 0029 7D        		.byte	125
+ 441 002a 07        		.byte	7
+ 442 002b 7F        		.byte	127
+ 443 002c 6F        		.byte	111
+ 444 002d 77        		.byte	119
+ 445 002e 7C        		.byte	124
+ 446 002f 39        		.byte	57
+ 447 0030 5E        		.byte	94
+ 448 0031 79        		.byte	121
+ 449 0032 71        		.byte	113
+ 450 0033 40        		.byte	64
+ 451               	.global	MOTTO
+ 452               		.type	MOTTO, @object
+ 453               		.size	MOTTO, 34
+ 454               	MOTTO:
+ 455 0034 00        		.byte	0
+ 456 0035 00        		.byte	0
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 9
+
+
+ 457 0036 00        		.byte	0
+ 458 0037 00        		.byte	0
+ 459 0038 00        		.byte	0
+ 460 0039 1F        		.byte	31
+ 461 003a 24        		.byte	36
+ 462 003b 44        		.byte	68
+ 463 003c 44        		.byte	68
+ 464 003d 7F        		.byte	127
+ 465 003e 00        		.byte	0
+ 466 003f 78        		.byte	120
+ 467 0040 05        		.byte	5
+ 468 0041 05        		.byte	5
+ 469 0042 05        		.byte	5
+ 470 0043 7E        		.byte	126
+ 471 0044 00        		.byte	0
+ 472 0045 40        		.byte	64
+ 473 0046 40        		.byte	64
+ 474 0047 7F        		.byte	127
+ 475 0048 40        		.byte	64
+ 476 0049 40        		.byte	64
+ 477 004a 00        		.byte	0
+ 478 004b 3E        		.byte	62
+ 479 004c 41        		.byte	65
+ 480 004d 41        		.byte	65
+ 481 004e 41        		.byte	65
+ 482 004f 22        		.byte	34
+ 483 0050 00        		.byte	0
+ 484 0051 00        		.byte	0
+ 485 0052 00        		.byte	0
+ 486 0053 00        		.byte	0
+ 487 0054 00        		.byte	0
+ 488 0055 00        		.byte	0
+ 489               	.global	counter
+ 490               		.type	counter, @object
+ 491               		.size	counter, 1
+ 492               	counter:
+ 493 0056 02        		.byte	2
+ 494               	.global	delta
+ 495               		.type	delta, @object
+ 496               		.size	delta, 1
+ 497               	delta:
+ 498 0057 01        		.byte	1
+ 499               	.global __do_copy_data
+GAS LISTING C:\WINDOWS\TEMP/cc2Y3mhO.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 demo.c
+C:\WINDOWS\TEMP/cc2Y3mhO.s:2      *ABS*:0000003f __SREG__
+C:\WINDOWS\TEMP/cc2Y3mhO.s:3      *ABS*:0000003e __SP_H__
+C:\WINDOWS\TEMP/cc2Y3mhO.s:4      *ABS*:0000003d __SP_L__
+C:\WINDOWS\TEMP/cc2Y3mhO.s:5      *ABS*:00000034 __CCP__
+C:\WINDOWS\TEMP/cc2Y3mhO.s:6      *ABS*:00000000 __tmp_reg__
+C:\WINDOWS\TEMP/cc2Y3mhO.s:7      *ABS*:00000001 __zero_reg__
+C:\WINDOWS\TEMP/cc2Y3mhO.s:11     .text:00000000 hardware_init
+C:\WINDOWS\TEMP/cc2Y3mhO.s:381    .data:00000008 pA
+C:\WINDOWS\TEMP/cc2Y3mhO.s:386    .data:0000000a pB
+C:\WINDOWS\TEMP/cc2Y3mhO.s:391    .data:0000000c pC
+C:\WINDOWS\TEMP/cc2Y3mhO.s:376    .data:00000006 LED_REG
+C:\WINDOWS\TEMP/cc2Y3mhO.s:371    .data:00000004 dotsi
+C:\WINDOWS\TEMP/cc2Y3mhO.s:46     .text:00000044 dyn_display_digit
+C:\WINDOWS\TEMP/cc2Y3mhO.s:433    .data:00000023 DEC_2_7SEG
+C:\WINDOWS\TEMP/cc2Y3mhO.s:89     .text:0000008e matrix_display
+C:\WINDOWS\TEMP/cc2Y3mhO.s:454    .data:00000034 MOTTO
+C:\WINDOWS\TEMP/cc2Y3mhO.s:133    .text:000000de scan_keyboard
+C:\WINDOWS\TEMP/cc2Y3mhO.s:401    .data:00000010 kbd0
+C:\WINDOWS\TEMP/cc2Y3mhO.s:406    .data:00000012 kbd1
+C:\WINDOWS\TEMP/cc2Y3mhO.s:411    .data:00000014 kbd2
+C:\WINDOWS\TEMP/cc2Y3mhO.s:416    .data:00000016 KEY_CODES
+C:\WINDOWS\TEMP/cc2Y3mhO.s:193    .text:0000014e __vector_1
+C:\WINDOWS\TEMP/cc2Y3mhO.s:492    .data:00000056 counter
+C:\WINDOWS\TEMP/cc2Y3mhO.s:497    .data:00000057 delta
+C:\WINDOWS\TEMP/cc2Y3mhO.s:218    .text:00000178 __vector_2
+C:\WINDOWS\TEMP/cc2Y3mhO.s:243    .text:000001a2 main
+C:\WINDOWS\TEMP/cc2Y3mhO.s:366    .data:00000002 righti
+C:\WINDOWS\TEMP/cc2Y3mhO.s:396    .data:0000000e DAC_REG
+C:\WINDOWS\TEMP/cc2Y3mhO.s:361    .data:00000000 lefti
+
+UNDEFINED SYMBOLS
+__udivmodqi4
+__do_copy_data

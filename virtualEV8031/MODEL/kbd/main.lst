@@ -1,0 +1,412 @@
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 1
+
+
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	delay16
+  10               		.type	delay16, @function
+  11               	delay16:
+  12               	/* prologue: function */
+  13               	/* frame size = 0 */
+  14               	.L2:
+  15               	/* #APP */
+  16               	 ;  2 "delays.c" 1
+  17 0000 0000      		nop
+  18               	 ;  0 "" 2
+  19               	/* #NOAPP */
+  20 0002 0197      		sbiw r24,1
+  21 0004 01F4      		brne .L2
+  22               	/* epilogue start */
+  23 0006 0895      		ret
+  24               		.size	delay16, .-delay16
+  25               	.global	delay
+  26               		.type	delay, @function
+  27               	delay:
+  28               	/* prologue: function */
+  29               	/* frame size = 0 */
+  30               	/* #APP */
+  31               	 ;  7 "delays.c" 1
+  32 0008 F894      		cli
+  33               	 ;  0 "" 2
+  34               	/* #NOAPP */
+  35 000a 9093 0000 		sts (delay_msec)+1,r25
+  36 000e 8093 0000 		sts delay_msec,r24
+  37               	/* #APP */
+  38               	 ;  7 "delays.c" 1
+  39 0012 7894      		sei
+  40               	 ;  0 "" 2
+  41               	/* #NOAPP */
+  42               	.L7:
+  43               	/* #APP */
+  44               	 ;  9 "delays.c" 1
+  45 0014 F894      		cli
+  46               	 ;  0 "" 2
+  47               	/* #NOAPP */
+  48 0016 8091 0000 		lds r24,delay_msec
+  49 001a 9091 0000 		lds r25,(delay_msec)+1
+  50               	/* #APP */
+  51               	 ;  9 "delays.c" 1
+  52 001e 7894      		sei
+  53               	 ;  0 "" 2
+  54               	/* #NOAPP */
+  55 0020 892B      		or r24,r25
+  56 0022 01F4      		brne .L7
+  57               	/* epilogue start */
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 2
+
+
+  58 0024 0895      		ret
+  59               		.size	delay, .-delay
+  60               	.global	__vector_4
+  61               		.type	__vector_4, @function
+  62               	__vector_4:
+  63 0026 1F92      		push __zero_reg__
+  64 0028 0F92      		push r0
+  65 002a 0FB6      		in r0,__SREG__
+  66 002c 0F92      		push r0
+  67 002e 1124      		clr __zero_reg__
+  68 0030 8F93      		push r24
+  69 0032 9F93      		push r25
+  70               	/* prologue: Signal */
+  71               	/* frame size = 0 */
+  72 0034 88B3      		in r24,56-32
+  73 0036 8058      		subi r24,lo8(-(-128))
+  74 0038 88BB      		out 56-32,r24
+  75 003a 8091 0000 		lds r24,delay_msec
+  76 003e 9091 0000 		lds r25,(delay_msec)+1
+  77 0042 892B      		or r24,r25
+  78 0044 01F0      		breq .L11
+  79 0046 8091 0000 		lds r24,delay_msec
+  80 004a 9091 0000 		lds r25,(delay_msec)+1
+  81 004e 0197      		sbiw r24,1
+  82 0050 9093 0000 		sts (delay_msec)+1,r25
+  83 0054 8093 0000 		sts delay_msec,r24
+  84               	.L11:
+  85 0058 8091 0000 		lds r24,need_zoom
+  86 005c 9091 0000 		lds r25,(need_zoom)+1
+  87 0060 892B      		or r24,r25
+  88 0062 01F0      		breq .L13
+  89 0064 8091 0000 		lds r24,need_zoom
+  90 0068 9091 0000 		lds r25,(need_zoom)+1
+  91 006c 0197      		sbiw r24,1
+  92 006e 9093 0000 		sts (need_zoom)+1,r25
+  93 0072 8093 0000 		sts need_zoom,r24
+  94 0076 88B3      		in r24,56-32
+  95 0078 90E4      		ldi r25,lo8(64)
+  96 007a 8927      		eor r24,r25
+  97 007c 88BB      		out 56-32,r24
+  98               	.L13:
+  99               	/* epilogue start */
+ 100 007e 9F91      		pop r25
+ 101 0080 8F91      		pop r24
+ 102 0082 0F90      		pop r0
+ 103 0084 0FBE      		out __SREG__,r0
+ 104 0086 0F90      		pop r0
+ 105 0088 1F90      		pop __zero_reg__
+ 106 008a 1895      		reti
+ 107               		.size	__vector_4, .-__vector_4
+ 108               	.global	hardware_init
+ 109               		.type	hardware_init, @function
+ 110               	hardware_init:
+ 111               	/* prologue: function */
+ 112               	/* frame size = 0 */
+ 113 008c 80EC      		ldi r24,lo8(-64)
+ 114 008e 87BB      		out 55-32,r24
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 3
+
+
+ 115 0090 85BF      		out 85-32,r24
+ 116 0092 82E7      		ldi r24,lo8(114)
+ 117 0094 90E0      		ldi r25,hi8(114)
+ 118 0096 9BBD      		out (74)+1-32,r25
+ 119 0098 8ABD      		out 74-32,r24
+ 120 009a 8BE0      		ldi r24,lo8(11)
+ 121 009c 8EBD      		out 78-32,r24
+ 122 009e 89B7      		in r24,89-32
+ 123 00a0 8064      		ori r24,lo8(64)
+ 124 00a2 89BF      		out 89-32,r24
+ 125               	/* #APP */
+ 126               	 ;  52 "main.c" 1
+ 127 00a4 7894      		sei
+ 128               	 ;  0 "" 2
+ 129               	/* #NOAPP */
+ 130 00a6 E091 0000 		lds r30,pA
+ 131 00aa F091 0000 		lds r31,(pA)+1
+ 132 00ae 1082      		st Z,__zero_reg__
+ 133 00b0 E091 0000 		lds r30,pB
+ 134 00b4 F091 0000 		lds r31,(pB)+1
+ 135 00b8 1082      		st Z,__zero_reg__
+ 136 00ba E091 0000 		lds r30,pC
+ 137 00be F091 0000 		lds r31,(pC)+1
+ 138 00c2 8FEF      		ldi r24,lo8(-1)
+ 139 00c4 8083      		st Z,r24
+ 140 00c6 E091 0000 		lds r30,LED_REG
+ 141 00ca F091 0000 		lds r31,(LED_REG)+1
+ 142 00ce 1082      		st Z,__zero_reg__
+ 143 00d0 E091 0000 		lds r30,dotsi
+ 144 00d4 F091 0000 		lds r31,(dotsi)+1
+ 145 00d8 83E0      		ldi r24,lo8(3)
+ 146 00da 8083      		st Z,r24
+ 147               	/* epilogue start */
+ 148 00dc 0895      		ret
+ 149               		.size	hardware_init, .-hardware_init
+ 150               	.global	main
+ 151               		.type	main, @function
+ 152               	main:
+ 153 00de FF92      		push r15
+ 154 00e0 0F93      		push r16
+ 155 00e2 1F93      		push r17
+ 156               	/* prologue: function */
+ 157               	/* frame size = 0 */
+ 158 00e4 00D0      		rcall hardware_init
+ 159 00e6 11E0      		ldi r17,lo8(1)
+ 160 00e8 0FEF      		ldi r16,lo8(-1)
+ 161 00ea FF24      		clr r15
+ 162 00ec FA94      		dec r15
+ 163               	.L26:
+ 164 00ee E091 0000 		lds r30,kbc0
+ 165 00f2 F091 0000 		lds r31,(kbc0)+1
+ 166 00f6 2081      		ld r18,Z
+ 167 00f8 30E0      		ldi r19,lo8(0)
+ 168 00fa 2095      		com r18
+ 169 00fc 3095      		com r19
+ 170 00fe 2F70      		andi r18,lo8(15)
+ 171 0100 3070      		andi r19,hi8(15)
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 4
+
+
+ 172 0102 E091 0000 		lds r30,kbc1
+ 173 0106 F091 0000 		lds r31,(kbc1)+1
+ 174 010a 8081      		ld r24,Z
+ 175 010c 482F      		mov r20,r24
+ 176 010e 50E0      		ldi r21,lo8(0)
+ 177 0110 4095      		com r20
+ 178 0112 5095      		com r21
+ 179 0114 4295      		swap r20
+ 180 0116 5295      		swap r21
+ 181 0118 507F      		andi r21,0xf0
+ 182 011a 5427      		eor r21,r20
+ 183 011c 407F      		andi r20,0xf0
+ 184 011e 5427      		eor r21,r20
+ 185 0120 5070      		andi r21,hi8(255)
+ 186 0122 E091 0000 		lds r30,kbc2
+ 187 0126 F091 0000 		lds r31,(kbc2)+1
+ 188 012a 8081      		ld r24,Z
+ 189 012c 90E0      		ldi r25,lo8(0)
+ 190 012e 8095      		com r24
+ 191 0130 9095      		com r25
+ 192 0132 8F70      		andi r24,lo8(15)
+ 193 0134 9070      		andi r25,hi8(15)
+ 194 0136 982F      		mov r25,r24
+ 195 0138 8827      		clr r24
+ 196 013a 482B      		or r20,r24
+ 197 013c 592B      		or r21,r25
+ 198 013e 422B      		or r20,r18
+ 199 0140 532B      		or r21,r19
+ 200 0142 80E0      		ldi r24,lo8(0)
+ 201 0144 00C0      		rjmp .L18
+ 202               	.L27:
+ 203 0146 5695      		lsr r21
+ 204 0148 4795      		ror r20
+ 205               	.L18:
+ 206 014a 40FD      		sbrc r20,0
+ 207 014c 00C0      		rjmp .L17
+ 208 014e 8F5F      		subi r24,lo8(-(1))
+ 209 0150 8C30      		cpi r24,lo8(12)
+ 210 0152 01F4      		brne .L27
+ 211               	.L17:
+ 212 0154 E091 0000 		lds r30,righti
+ 213 0158 F091 0000 		lds r31,(righti)+1
+ 214 015c 8083      		st Z,r24
+ 215 015e A091 0000 		lds r26,lefti
+ 216 0162 B091 0000 		lds r27,(lefti)+1
+ 217 0166 E82F      		mov r30,r24
+ 218 0168 F0E0      		ldi r31,lo8(0)
+ 219 016a E050      		subi r30,lo8(-(KEY_CODES))
+ 220 016c F040      		sbci r31,hi8(-(KEY_CODES))
+ 221 016e 8081      		ld r24,Z
+ 222 0170 8C93      		st X,r24
+ 223 0172 84E6      		ldi r24,lo8(100)
+ 224 0174 90E0      		ldi r25,hi8(100)
+ 225 0176 00D0      		rcall delay
+ 226 0178 E091 0000 		lds r30,mrow
+ 227 017c F091 0000 		lds r31,(mrow)+1
+ 228 0180 1083      		st Z,r17
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 5
+
+
+ 229 0182 E091 0000 		lds r30,mcol
+ 230 0186 F091 0000 		lds r31,(mcol)+1
+ 231 018a F082      		st Z,r15
+ 232 018c E091 0000 		lds r30,LED_REG
+ 233 0190 F091 0000 		lds r31,(LED_REG)+1
+ 234 0194 1083      		st Z,r17
+ 235 0196 E091 0000 		lds r30,DAC_REG
+ 236 019a F091 0000 		lds r31,(DAC_REG)+1
+ 237 019e 812F      		mov r24,r17
+ 238 01a0 8095      		com r24
+ 239 01a2 8083      		st Z,r24
+ 240 01a4 E091 0000 		lds r30,DSP_REG
+ 241 01a8 F091 0000 		lds r31,(DSP_REG)+1
+ 242 01ac F082      		st Z,r15
+ 243 01ae 0023      		tst r16
+ 244 01b0 01F0      		breq .L19
+ 245 01b2 110F      		lsl r17
+ 246               	.L20:
+ 247 01b4 1038      		cpi r17,lo8(-128)
+ 248 01b6 01F0      		breq .L21
+ 249 01b8 1130      		cpi r17,lo8(1)
+ 250 01ba 01F0      		breq .+2
+ 251 01bc 00C0      		rjmp .L26
+ 252               	.L21:
+ 253 01be 0095      		com r16
+ 254 01c0 00C0      		rjmp .L26
+ 255               	.L19:
+ 256 01c2 1695      		lsr r17
+ 257 01c4 00C0      		rjmp .L20
+ 258               		.size	main, .-main
+ 259               	.global	lefti
+ 260               		.data
+ 261               		.type	lefti, @object
+ 262               		.size	lefti, 2
+ 263               	lefti:
+ 264 0000 00A0      		.word	-24576
+ 265               	.global	righti
+ 266               		.type	righti, @object
+ 267               		.size	righti, 2
+ 268               	righti:
+ 269 0002 01A0      		.word	-24575
+ 270               	.global	dotsi
+ 271               		.type	dotsi, @object
+ 272               		.size	dotsi, 2
+ 273               	dotsi:
+ 274 0004 04A0      		.word	-24572
+ 275               	.global	LED_REG
+ 276               		.type	LED_REG, @object
+ 277               		.size	LED_REG, 2
+ 278               	LED_REG:
+ 279 0006 06A0      		.word	-24570
+ 280               	.global	pA
+ 281               		.type	pA, @object
+ 282               		.size	pA, 2
+ 283               	pA:
+ 284 0008 0080      		.word	-32768
+ 285               	.global	pB
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 6
+
+
+ 286               		.type	pB, @object
+ 287               		.size	pB, 2
+ 288               	pB:
+ 289 000a 0180      		.word	-32767
+ 290               	.global	pC
+ 291               		.type	pC, @object
+ 292               		.size	pC, 2
+ 293               	pC:
+ 294 000c 0280      		.word	-32766
+ 295               	.global	kbc0
+ 296               		.type	kbc0, @object
+ 297               		.size	kbc0, 2
+ 298               	kbc0:
+ 299 000e 0690      		.word	-28666
+ 300               	.global	kbc1
+ 301               		.type	kbc1, @object
+ 302               		.size	kbc1, 2
+ 303               	kbc1:
+ 304 0010 0590      		.word	-28667
+ 305               	.global	kbc2
+ 306               		.type	kbc2, @object
+ 307               		.size	kbc2, 2
+ 308               	kbc2:
+ 309 0012 0390      		.word	-28669
+ 310               	.global	mrow
+ 311               		.type	mrow, @object
+ 312               		.size	mrow, 2
+ 313               	mrow:
+ 314 0014 0280      		.word	-32766
+ 315               	.global	mcol
+ 316               		.type	mcol, @object
+ 317               		.size	mcol, 2
+ 318               	mcol:
+ 319 0016 0080      		.word	-32768
+ 320               	.global	DSP_REG
+ 321               		.type	DSP_REG, @object
+ 322               		.size	DSP_REG, 2
+ 323               	DSP_REG:
+ 324 0018 0180      		.word	-32767
+ 325               	.global	DAC_REG
+ 326               		.type	DAC_REG, @object
+ 327               		.size	DAC_REG, 2
+ 328               	DAC_REG:
+ 329 001a 01F0      		.word	-4095
+ 330               	.global	KEY_CODES
+ 331               		.type	KEY_CODES, @object
+ 332               		.size	KEY_CODES, 13
+ 333               	KEY_CODES:
+ 334 001c 01        		.byte	1
+ 335 001d 04        		.byte	4
+ 336 001e 07        		.byte	7
+ 337 001f 0A        		.byte	10
+ 338 0020 02        		.byte	2
+ 339 0021 05        		.byte	5
+ 340 0022 08        		.byte	8
+ 341 0023 00        		.byte	0
+ 342 0024 03        		.byte	3
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 7
+
+
+ 343 0025 06        		.byte	6
+ 344 0026 09        		.byte	9
+ 345 0027 0B        		.byte	11
+ 346 0028 0C        		.byte	12
+ 347               	.global	need_zoom
+ 348               		.type	need_zoom, @object
+ 349               		.size	need_zoom, 2
+ 350               	need_zoom:
+ 351 0029 F401      		.word	500
+ 352               		.comm delay_msec,2,1
+ 353               	.global __do_copy_data
+ 354               	.global __do_clear_bss
+GAS LISTING C:\WINDOWS\TEMP/cc0QY1MG.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\WINDOWS\TEMP/cc0QY1MG.s:2      *ABS*:0000003f __SREG__
+C:\WINDOWS\TEMP/cc0QY1MG.s:3      *ABS*:0000003e __SP_H__
+C:\WINDOWS\TEMP/cc0QY1MG.s:4      *ABS*:0000003d __SP_L__
+C:\WINDOWS\TEMP/cc0QY1MG.s:5      *ABS*:00000034 __CCP__
+C:\WINDOWS\TEMP/cc0QY1MG.s:6      *ABS*:00000000 __tmp_reg__
+C:\WINDOWS\TEMP/cc0QY1MG.s:7      *ABS*:00000001 __zero_reg__
+C:\WINDOWS\TEMP/cc0QY1MG.s:11     .text:00000000 delay16
+C:\WINDOWS\TEMP/cc0QY1MG.s:27     .text:00000008 delay
+                            *COM*:00000002 delay_msec
+C:\WINDOWS\TEMP/cc0QY1MG.s:62     .text:00000026 __vector_4
+C:\WINDOWS\TEMP/cc0QY1MG.s:350    .data:00000029 need_zoom
+C:\WINDOWS\TEMP/cc0QY1MG.s:110    .text:0000008c hardware_init
+C:\WINDOWS\TEMP/cc0QY1MG.s:283    .data:00000008 pA
+C:\WINDOWS\TEMP/cc0QY1MG.s:288    .data:0000000a pB
+C:\WINDOWS\TEMP/cc0QY1MG.s:293    .data:0000000c pC
+C:\WINDOWS\TEMP/cc0QY1MG.s:278    .data:00000006 LED_REG
+C:\WINDOWS\TEMP/cc0QY1MG.s:273    .data:00000004 dotsi
+C:\WINDOWS\TEMP/cc0QY1MG.s:152    .text:000000de main
+C:\WINDOWS\TEMP/cc0QY1MG.s:298    .data:0000000e kbc0
+C:\WINDOWS\TEMP/cc0QY1MG.s:303    .data:00000010 kbc1
+C:\WINDOWS\TEMP/cc0QY1MG.s:308    .data:00000012 kbc2
+C:\WINDOWS\TEMP/cc0QY1MG.s:268    .data:00000002 righti
+C:\WINDOWS\TEMP/cc0QY1MG.s:263    .data:00000000 lefti
+C:\WINDOWS\TEMP/cc0QY1MG.s:333    .data:0000001c KEY_CODES
+C:\WINDOWS\TEMP/cc0QY1MG.s:313    .data:00000014 mrow
+C:\WINDOWS\TEMP/cc0QY1MG.s:318    .data:00000016 mcol
+C:\WINDOWS\TEMP/cc0QY1MG.s:328    .data:0000001a DAC_REG
+C:\WINDOWS\TEMP/cc0QY1MG.s:323    .data:00000018 DSP_REG
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

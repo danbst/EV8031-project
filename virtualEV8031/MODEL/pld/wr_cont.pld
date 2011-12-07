@@ -1,0 +1,56 @@
+Name      Count10;
+Partno    CA0018;
+Date      12/19/99;
+Revision  02;
+Designer  Kahl;
+Company   Logical Devices, Inc.;
+Assembly  None;
+Location  None;
+Device    g16v8a;
+
+/****************************************************************/
+/* Compiling Note: For this Design , it will compile without any*/
+/* Errors if you Click on Options from the Main WInCUPL tool window */
+/* and Select Compiler option and set Minimization button to QUICK*/   
+/*                                                              */
+/* Decade Counter                                               */
+/*                                                              */
+/* This is a 4-bit up/down decade counter with synchronous      */
+/* clear capability.  An asynchronous ripple carry output is    */
+/* provided for cascading multiple devices.  CUPL state machine */
+/* syntax is used.                                              */
+/****************************************************************/
+
+/**  Inputs  **/
+
+Pin [2..4]   = [al0..2];	        /* lower address */
+Pin [6..9]   = [ah0..3];	        /* higher address */
+Pin 5 = wr_rd;			 /* write or read */
+
+/**  Outputs  **/
+Pin [17..19] = [rt0..2];		/* outputs for routing */
+Pin 16 = a_en;
+Pin 15 = 9_en;
+Pin 14 = 8_en;
+Pin 12 = f_en;
+
+
+/** Declarations and Intermediate Variable Definitions **/
+set_a = [ah0..3]:'h'A;
+set_9 = [ah0..3]:'h'9;
+set_8 = [ah0..3]:'h'8;
+set_f = [ah0..3]:'h'F;
+
+
+/** Logic **/
+
+rt0 = al2;
+rt1 = al1;
+rt2 = al0;
+a_en = set_a & wr_rd;
+9_en = set_9 & wr_rd;
+8_en = set_8 & wr_rd;
+f_en = set_f & wr_rd;
+
+
+
